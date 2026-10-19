@@ -1,0 +1,40 @@
+<!-- CCPA Compliance & TrustedForm Evidentiary Tracking Script -->
+<div id="ccpa-banner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:#1a1a1a; color:#fff; padding:15px 20px; z-index:99999; box-shadow:0 -2px 10px rgba(0,0,0,0.3); font-family:sans-serif; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+    <div style="max-width:800px; font-size:14px; line-height:1.4; margin-bottom:10px;">
+        <strong>Notice of Collection & Opt-Out:</strong> We collect and share personal data for analytics and advertising. California residents have the right to opt out of the "sale" or "sharing" of personal info. 
+    </div>
+    <div style="display:flex; gap:10px;">
+        <button id="ccpa-opt-out" style="background:#d9534f; color:white; border:none; padding:8px 14px; cursor:pointer; font-weight:bold; border-radius:4px;">Opt-Out of Sale/Sharing</button>
+        <button id="ccpa-accept" style="background:#5cb85c; color:white; border:none; padding:8px 14px; cursor:pointer; font-weight:bold; border-radius:4px;">Accept All</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    const consentStatus = localStorage.getItem('ccpa_opt_out_status');
+    const banner = document.getElementById('ccpa-banner');
+    
+    if (!consentStatus) {
+        banner.style.display = 'flex';
+    }
+
+    document.getElementById('ccpa-accept').addEventListener('click', function() {
+        localStorage.setItem('ccpa_opt_out_status', 'false');
+        banner.style.display = 'none';
+    });
+
+    document.getElementById('ccpa-opt-out').addEventListener('click', function() {
+        localStorage.setItem('ccpa_opt_out_status', 'true');
+        banner.style.display = 'none';
+        window.dispatchEvent(new CustomEvent('ccpaOptOutApplied'));
+    });
+
+    (function() {
+        var tf = document.createElement('script');
+        tf.type = 'text/javascript'; tf.async = true;
+        tf.src = 'https://cert.activeprospect.com/cert.js?js_version=6';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(tf, s);
+    })();
+})();
+</script>
